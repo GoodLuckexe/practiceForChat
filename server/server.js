@@ -3,6 +3,9 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generatedMessage} = require('./utils/message') //import function, from another directory
+
+
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -16,33 +19,25 @@ io.on('connection', function (socket) { //called w/ socket, usually only one io.
   console.log('New user connected');
 
   //socket.emit from Admin text Welcome to chat app
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chat app',
-    createdAt: new Date().getTime()
-  });
+  socket.emit('newMessage', generatedMessage('Admin', 'Welcome to the chat app!'));
 
   // socket.broadcast.emit from ADmin text New user joined
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'New user has joined',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit('newMessage', generatedMessage('Admin', 'New User joined.'))
 
 
 
   socket.on('createMessage', (message) => { // the thing in the 2nd argument's parentheses is the event
     console.log('createMessage', message);
-    //io.emit('newMessage', {
+    io.emit('newMessage', generatedMessage(message.from, message.text))
     //  from:message.from,
     //  text:message.text,
     //  createdAt: new Date().getTime()
     //}); //emits an event to every single connection, while socket.emit only emits to a single connection
-    socket.broadcast.emit('newMessage', { // broadcast has same function as socket, but the user that sends doesn't get the message
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    });
+    //socket.broadcast.emit('newMessage', { // broadcast has same function as socket, but the user that sends doesn't get the message
+    //  from: message.from,
+  //    text: message.text,
+    //  createdAt: new Date().getTime()
+  //  });
   });
   socket.on('disconnect', () => {
     console.log('User has disconnected.');

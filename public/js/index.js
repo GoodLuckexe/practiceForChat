@@ -15,3 +15,4 @@ socket.on('newEmail', function (email){
 socket.on('newMessage', function (message){
   console.log('New message arrived.', message); // prints email and its object data
 });
+// the object in the function arguments = thing used in the console.log to display the object
