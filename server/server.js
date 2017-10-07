@@ -26,9 +26,10 @@ io.on('connection', function (socket) { //called w/ socket, usually only one io.
 
 
 
-  socket.on('createMessage', (message) => { // the thing in the 2nd argument's parentheses is the event
+  socket.on('createMessage', (message,callback) => { // the thing in the 2nd argument's parentheses is the event
     console.log('createMessage', message);
     io.emit('newMessage', generatedMessage(message.from, message.text))
+    callback('This is from the server');
     //  from:message.from,
     //  text:message.text,
     //  createdAt: new Date().getTime()
