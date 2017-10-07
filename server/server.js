@@ -15,13 +15,13 @@ io.on('connection', function (socket) { //called w/ socket, usually only one io.
   // ()=> is a call back function in second parameter to let you do something after connection
   console.log('New user connected');
 
-  socket.emit('newMessage', { // second argument = object, so we can send many datas
-    from: 'siueric@gmail.com',
-    text: 'hi guys',
-    createAt: 123
-  });
-  socket.on('createMessage', (newMessage) => { // the thing in the 2nd argument's parentheses is the event
-    console.log('createMessage', newMessage);
+  socket.on('createMessage', (message) => { // the thing in the 2nd argument's parentheses is the event
+    console.log('createMessage', message);
+    io.emit('newMessage', {
+      from:message.from,
+      text:message.text,
+      createdAt: new Date().getTime()
+    }); //emits an event to every single connection, while socket.emit only emits to a single connection
   });
   socket.on('disconnect', () => {
     console.log('User has disconnected.');

@@ -2,11 +2,6 @@ var socket = io(); // initiating request from client to server to open socket an
 
 socket.on('connect',function (){
   console.log('Connected to server');
-
-  socket.emit('createMessage', {
-    to: 'm@glp.com',
-    text: 'suh dudes'
-  });
 });
 
 socket.on('disconnect', function (){
@@ -18,5 +13,5 @@ socket.on('newEmail', function (email){
 });
 
 socket.on('newMessage', function (message){
-  console.log('New email arrived.', message); // prints email and its object data
+  console.log('New message arrived.', message); // prints email and its object data
 });
